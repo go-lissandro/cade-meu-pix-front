@@ -2,10 +2,16 @@ export type ChargeStatus = 'pending' | 'partially_paid' | 'paid' | 'cancelled' |
 export type PaymentMethod = 'pix' | 'transfer' | 'cash' | 'card' | 'boleto';
 export type MessageChannel = 'whatsapp' | 'email';
 
-export interface Client {
+export interface User {
   id: string;
   name: string;
   email: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  email?: string;
   phone: string;
   notes?: string;
   isActive: boolean;
@@ -35,10 +41,16 @@ export interface Payment {
   createdAt: string;
 }
 
+export interface ChargeDetail extends Charge {
+  payments: Payment[];
+}
+
 export interface DashboardStats {
   totalPending: number;
   totalPaid: number;
   totalOverdue: number;
+  totalPartiallyPaid: number;
   totalReceivable: number;
+  amountReceived: number;
   chargesToday: number;
 }

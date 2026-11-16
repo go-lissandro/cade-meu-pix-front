@@ -1,20 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import type { DashboardStats } from '@/types/billing';
 
-const data = [
-  { name: 'Pendentes', value: 4, color: 'hsl(38, 92%, 50%)' },
-  { name: 'Pagas', value: 1, color: 'hsl(142, 71%, 45%)' },
-  { name: 'Vencidas', value: 2, color: 'hsl(0, 72%, 51%)' },
-  { name: 'Parciais', value: 1, color: 'hsl(199, 89%, 48%)' },
-];
+export const ChargesChart = ({ stats }: { stats: DashboardStats }) => {
+  const data = [
+    { name: 'Pendentes', value: stats.totalPending, color: 'hsl(38, 92%, 50%)' },
+    { name: 'Pagas', value: stats.totalPaid, color: 'hsl(142, 71%, 45%)' },
+    { name: 'Vencidas', value: stats.totalOverdue, color: 'hsl(0, 72%, 51%)' },
+    { name: 'Parciais', value: stats.totalPartiallyPaid, color: 'hsl(199, 89%, 48%)' },
+  ];
+  const isEmpty = data.every((d) => d.value === 0);
 
-export const ChargesChart = () => (
+  return (
   <Card className="animate-fade-in border-border/50 shadow-sm">
     <CardHeader className="pb-2">
       <CardTitle className="text-lg font-semibold">Distribuição de Cobranças</CardTitle>
     </CardHeader>
     <CardContent>
       <div className="h-[220px]">
+        {isEmpty ? (
+          <div className="h-full flex items-center justify-center text-sm text-muted-foreground">
+            Nenhuma cobrança ainda.
+          </div>
+        ) : (
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie data={data} cx="50%" cy="50%" innerRadius={55} outerRadius={85} paddingAngle={4} dataKey="value">
@@ -27,6 +35,7 @@ export const ChargesChart = () => (
             />
           </PieChart>
         </ResponsiveContainer>
+        )}
       </div>
       <div className="flex flex-wrap gap-4 justify-center mt-2">
         {data.map((item) => (
@@ -40,3 +49,4 @@ export const ChargesChart = () => (
     </CardContent>
   </Card>
 );
+};
