@@ -30,6 +30,9 @@ export const RecentCharges = ({ charges }: { charges: Charge[] }) => (
                 <td className="px-5 py-3.5"><ChargeStatusBadge status={charge.status} /></td>
               </tr>
             ))}
+            {charges.length === 0 && (
+              <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground text-sm">Nenhuma cobrança cadastrada ainda.</td></tr>
+            )}
           </tbody>
         </table>
       </div>
